@@ -1,360 +1,521 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uday Prakash Platform - 100% Hardware Secure</title>
-    <style>
-        :root {
-            --primary: #4285F4;
-            --primary-dark: #3367d6;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --success: #16a34a;
-        }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 0; background: var(--bg-color); color: var(--text-main); margin: 0; }
-        
-        .header { background: #1e293b; border-bottom: 1px solid var(--border-color); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .logo-area h1 { font-size: 18px; margin: 0; color: #fff; display: flex; align-items: center; gap: 8px; }
-        .logo-area p { font-size: 11px; margin: 2px 0 0 0; color: var(--text-muted); text-align: left; }
-        .user-stats { background: #0f172a; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-color); font-size: 13px; display: flex; gap: 10px; align-items: center; }
-        
-        .main-container { max-width: 950px; margin: 20px auto; padding: 0 15px 40px 15px; box-sizing: border-box; }
-        .card { background: var(--card-bg); padding: 25px 20px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); border: 1px solid var(--border-color); margin-bottom: 20px; text-align: left; }
-        
-        .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); font-size: 14px; }
-        input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid var(--border-color); border-radius: 6px; font-size: 15px; background: #0f172a; color: #fff; }
-        input:focus { border-color: var(--primary); outline: none; }
-        
-        button { padding: 12px; font-size: 15px; cursor: pointer; background: var(--primary); color: white; border: none; border-radius: 6px; width: 100%; font-weight: bold; transition: background 0.2s; margin-top: 5px; }
-        button:hover { background: var(--primary-dark); }
-        
-        .hero-banner { background: linear-gradient(135deg, #1e3a8a, #3b82f6); border-radius: 10px; padding: 25px 15px; margin-bottom: 20px; text-align: center; }
-        .hero-banner h2 { margin: 0 0 8px 0; font-size: 20px; color: #fff; }
-        .hero-banner p { margin: 0; font-size: 13px; color: #e2e8f0; }
-
-        .search-bar { width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: #0f172a; color: #fff; font-size: 14px; margin-bottom: 20px; box-sizing: border-box; }
-
-        .plans-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-top: 15px; }
-        .plan-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
-        .plan-card.popular { border-color: #facc15; box-shadow: 0 0 15px rgba(250, 204, 21, 0.2); }
-        .badge { background: #facc15; color: #000; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 4px; position: absolute; top: -10px; right: 20px; }
-        .plan-card h3 { margin: 5px 0 10px 0; color: #fff; font-size: 18px; }
-        .price { font-size: 24px; color: #4ade80; font-weight: bold; margin-bottom: 15px; }
-        .features-list { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; text-align: left; list-style: none; padding: 0; }
-        .features-list li { margin-bottom: 8px; }
-
-        .category-title { font-size: 17px; color: #facc15; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .assets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .asset-box { border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; background: #0f172a; display: flex; flex-direction: column; justify-content: space-between; }
-        .asset-box p { font-size: 13px; margin: 0 0 8px 0; color: #f1f5f9; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .asset-box img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color); }
-    </style>
-
-    <script>
-        const categoriesData = [
-            {
-                categoryName: "🏠 हाउस के अंदर (इंटीरियर)",
-                items: [
-                    { name: "पञ्चायत कमरा - 1", url: "https://i.ibb.co/DgYH2XbB/IMG-20261029-WA0001.jpg" },
-                    { name: "गाँव का कमरा - रात", url: "https://i.ibb.co/DPyBQ7j1/IMG-20261025-WA0000.jpg" },
-                    { name: "विलेज इंटीरियर - 01", url: "https://i.ibb.co/LdfgJ9nP/IMG-20261029-WA0041.jpg" },
-                    { name: "विलेज इंटीरियर - 02", url: "https://i.ibb.co/dhjGLzp/IMG-20261029-WA0035.jpg" },
-                    { name: "विलेज इंटीरियर - 03", url: "https://i.ibb.co/9kZzcdZf/IMG-20261029-WA0021.jpg" },
-                    { name: "इंटीरियर सेट - 04", url: "https://i.ibb.co/LDqcQ2wQ/IMG-20261029-WA0000.jpg" }
-                ]
-            },
-            {
-                categoryName: "🏡 2D कार्टून हाउस (बाहरी दृश्य)",
-                items: [
-                    { name: "पञ्चायत हाउस बाहरी - 01", url: "https://i.ibb.co/BHN03K3w/IMG-20261029-WA0031.jpg" },
-                    { name: "विलेज हाउस - 02", url: "https://i.ibb.co/4nJHNTNJ/IMG-20261029-WA0040.jpg" },
-                    { name: "विलेज हाउस - 03", url: "https://i.ibb.co/BVFwf4Jr/IMG-20261029-WA0030.jpg" },
-                    { name: "विलेज हाउस - 04", url: "https://i.ibb.co/S4msdJ1z/IMG-20261029-WA0032.jpg" },
-                    { name: "विलेज हाउस - 05", url: "https://i.ibb.co/zKWm31C/IMG-20261029-WA0034.jpg" },
-                    { name: "विलेज हाउस - 06", url: "https://i.ibb.co/LDqcQ2wQ/IMG-20261029-WA0000.jpg" }
-                ]
-            },
-            {
-                categoryName: "🌳 गाँव का माहौल और प्रकृति",
-                items: [
-                    { name: "गाँव का हरा-भरा मैदान", url: "https://i.ibb.co/s9xBqR06/IMG-20261029-WA0042.jpg" },
-                    { name: "गाँव के पेड़ और हरियाली", url: "https://i.ibb.co/k6k9Dsyz/IMG-20261029-WA0033.jpg" },
-                    { name: "प्राकृतिक दृश्य - 01", url: "https://i.ibb.co/ZRtfSr4n/IMG-20261029-WA0025.jpg" },
-                    { name: "प्राकृतिक दृश्य - 02", url: "https://i.ibb.co/hRpqRFkG/IMG-20261029-WA0024.jpg" },
-                    { name: "प्राकृतिक दृश्य - 03", url: "https://i.ibb.co/Pv37sMZq/IMG-20261029-WA0038.jpg" },
-                    { name: "गाँव का वातावरण - 04", url: "https://i.ibb.co/DPyBQ7j1/IMG-20261025-WA0000.jpg" }
-                ]
-            },
-            {
-                categoryName: "🛤️ गाँव का रास्ता और अन्य सीन्स",
-                items: [
-                    { name: "गाँव का रास्ता - 01", url: "https://i.ibb.co/LdfgJ9nP/IMG-20261029-WA0041.jpg" },
-                    { name: "गाँव का रास्ता - 02", url: "https://i.ibb.co/9kZzcdZf/IMG-20261029-WA0021.jpg" },
-                    { name: "अन्य सीन - 01", url: "https://i.ibb.co/4nJHNTNJ/IMG-20261029-WA0040.jpg" },
-                    { name: "अन्य सीन - 02", url: "https://i.ibb.co/dhjGLzp/IMG-20261029-WA0035.jpg" },
-                    { name: "अन्य सीन - 03", url: "https://i.ibb.co/zKWm31C/IMG-20261029-WA0034.jpg" },
-                    { name: "अन्य सीन - 04", url: "https://i.ibb.co/DgYH2XbB/IMG-20261029-WA0001.jpg" },
-                    { name: "अन्य सीन - 05", url: "https://i.ibb.co/BHN03K3w/IMG-20261029-WA0031.jpg" },
-                    { name: "अन्य सीन - 06", url: "https://i.ibb.co/S4msdJ1z/IMG-20261029-WA0032.jpg" },
-                    { name: "अन्य सीन - 07", url: "https://i.ibb.co/k6k9Dsyz/IMG-20261029-WA0033.jpg" },
-                    { name: "अन्य सीन - 08", url: "https://i.ibb.co/BVFwf4Jr/IMG-20261029-WA0030.jpg" },
-                    { name: "अन्य सीन - 09", url: "https://i.ibb.co/ZRtfSr4n/IMG-20261029-WA0025.jpg" },
-                    { name: "अन्य सीन - 10", url: "https://i.ibb.co/hRpqRFkG/IMG-20261029-WA0024.jpg" }
-                ]
-            }
-        ];
-
-        let activeMobile = "";
-
-        // 1. हार्डवेयर और डिवाइस फिंगरप्रिंट तैयार करने का पक्का फंक्शन
-        function getDeviceHardwareID() {
-            let canvas = document.createElement('canvas');
-            let ctx = canvas.getContext('2d');
-            let txt = "UdayPrakashHardwareSecurity_v2";
-            ctx.textBaseline = "top";
-            ctx.font = "14px 'Arial'";
-            ctx.fillText(txt, 2, 2);
-            
-            let hardwareSignature = [
-                screen.width,
-                screen.height,
-                screen.colorDepth,
-                navigator.hardwareConcurrency || 2,
-                navigator.deviceMemory || 4,
-                canvas.toDataURL()
-            ].join('_');
-
-            // इसे एन्कोड करके यूनीक हार्डवेयर आईडी बनाना
-            let hash = 0;
-            for (let i = 0; i < hardwareSignature.length; i++) {
-                hash = ((hash << 5) - hash) + hardwareSignature.charCodeAt(i);
-                hash |= 0;
-            }
-            return "HW_KEY_" + Math.abs(hash);
-        }
-
-        function speakMessage(text) {
-            if ('speechSynthesis' in window) {
-                let utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'hi-IN';
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // स्टेप 2: ओटीपी भेजने से पहले सख्त हार्डवेयर और नंबर जाँच
-        window.sendOTP = function() {
-            let mobile = document.getElementById('mobile-input').value.trim();
-            let email = document.getElementById('email-input').value.trim().toLowerCase();
-
-            // नंबर वैलिडेशन (केवल असली भारतीय 10 अंक)
-            let validIndianMobile = /^[6-9]\d{9}$/;
-            let fakePatterns = [/^(\d)\1{9}$/, /^123/, /^0/];
-            let isFake = fakePatterns.some(pattern => pattern.test(mobile));
-
-            if (!validIndianMobile.test(mobile) || isFake) {
-                alert("❌ सुरक्षा चेतावनी: यह एक अमान्य या फर्जी मोबाइल नंबर है! कृपया अपना असली 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें।");
-                return;
-            }
-
-            if (!email.endsWith("@gmail.com") || email.length < 11) {
-                alert("❌ कृपया सही और वैध (Valid) जीमेल आईडी दर्ज करें!");
-                return;
-            }
-
-            // हार्डवेयर चेक: क्या इस मोबाइल/डिवाइस से पहले ही क्रेडिट्स लिए जा चुके हैं?
-            let hwID = getDeviceHardwareID();
-            let existingDeviceRecord = localStorage.getItem("uday_hw_lock_" + hwID);
-
-            if (existingDeviceRecord) {
-                // अगर इस हार्डवेयर से पहले ही कोई डेटा बन चुका है, तो नया क्रेडिट नहीं मिलेगा!
-                let oldData = JSON.parse(existingDeviceRecord);
-                alert(`⚠️ सुरक्षा चेतावनी!\n\nइस डिवाइस (मोबाइल/कम्प्यूटर) से पहले ही नंबर (${oldData.mobile}) पर 5 मुफ्त क्रेडिट्स लिए जा चुके हैं।\n\nआप फर्जी नंबर बदलकर नए क्रेडिट नहीं ले सकते। आपका पुराना अकाउंट लोड किया जा रहा है।`);
-                
-                // पुराना नंबर ही ऑटोमैटिक सेट कर दें
-                document.getElementById('mobile-input').value = oldData.mobile;
-            }
-
-            document.getElementById('otp-section').style.display = 'block';
-            alert("✅ ओटीपी जनरेट हो गया है! बॉक्स में 123456 दर्ज करें।");
-        };
-
-        // स्टेप 3: वेरीफाई और लॉगिन (हार्डवेयर लॉक के साथ)
-        window.verifyAndLogin = function() {
-            let mobile = document.getElementById('mobile-input').value.trim();
-            let email = document.getElementById('email-input').value.trim().toLowerCase();
-            let otp = document.getElementById('otp-input').value.trim();
-
-            if (otp !== "123456") {
-                alert("❌ गलत ओटीपी! कृपया सही 6 अंकों का ओटीपी (123456) दर्ज करें।");
-                return;
-            }
-
-            let hwID = getDeviceHardwareID();
-            let existingDeviceRecord = localStorage.getItem("uday_hw_lock_" + hwID);
-            let finalMobile = mobile;
-
-            if (existingDeviceRecord) {
-                let oldData = JSON.parse(existingDeviceRecord);
-                finalMobile = oldData.mobile; // हमेशा पुराना रजिस्टर्ड नंबर ही मान्य होगा इस डिवाइस पर!
-            } else {
-                // पहली बार इस डिवाइस पर लॉगिन हुआ है, तो हार्डवेयर आईडी के साथ नंबर लॉक कर दें
-                let lockData = { mobile: finalMobile, email: email };
-                localStorage.setItem("uday_hw_lock_" + hwID, JSON.stringify(lockData));
-            }
-
-            activeMobile = finalMobile;
-            let creditsKey = "uday_credits_" + activeMobile;
-            let currentCredits = localStorage.getItem(creditsKey);
-
-            if (currentCredits === null) {
-                currentCredits = 5;
-                localStorage.setItem(creditsKey, "5");
-            } else {
-                currentCredits = parseInt(currentCredits);
-            }
-
-            showDashboard(activeMobile, email, currentCredits);
-            alert(`🎉 लॉगिन सफल! आपके पास ${currentCredits} क्रेडिट्स उपलब्ध हैं।`);
-        };
-
-        window.showDashboard = function(mobile, email, credits) {
-            document.getElementById('auth-section').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
-            document.getElementById('user-stats-header').style.display = 'flex';
-            document.getElementById('credits-count').innerText = credits;
-            document.getElementById('user-display-info').innerText = mobile + " (" + email + ")";
-
-            let librarySec = document.getElementById('library-section');
-            let plansSec = document.getElementById('plans-section');
-
-            if (credits <= 0) {
-                librarySec.style.display = 'none';
-                plansSec.style.display = 'block';
-            } else {
-                librarySec.style.display = 'block';
-                plansSec.style.display = 'block';
-                renderCategories("");
-            }
-        };
-
-        window.renderCategories = function(filter) {
-            let container = document.getElementById('categories-container');
-            if (!container) return;
-            container.innerHTML = "";
-
-            categoriesData.forEach(cat => {
-                let filteredItems = cat.items.filter(item => 
-                    item.name.toLowerCase().includes(filter.toLowerCase())
-                );
-
-                if (filteredItems.length > 0) {
-                    let sectionDiv = document.createElement('div');
-                    sectionDiv.innerHTML = `
-                        <div class="category-title">${cat.categoryName} (${filteredItems.length})</div>
-                        <div class="assets-grid">
-                            ${filteredItems.map(item => `
-                                <div class="asset-box">
-                                    <p><b>${item.name}</b></p>
-                                    <img src="${item.url}" alt="${item.name}">
-                                    <button onclick="downloadAsset('${item.name}', '${item.url}')" style="margin-top: 10px; font-size: 13px; padding: 8px;">डाउनलोड (1 क्रेडिट)</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                    container.appendChild(sectionDiv);
-                }
-            });
-        };
-
-        window.filterAssets = function() {
-            let query = document.getElementById('search-input').value;
-            renderCategories(query);
-        };
-
-        window.downloadAsset = function(title, url) {
-            let creditSpan = document.getElementById('credits-count');
-            let credits = parseInt(creditSpan.innerText);
-
-            if (credits > 0) {
-                credits -= 1;
-                creditSpan.innerText = credits;
-                localStorage.setItem("uday_credits_" + activeMobile, credits);
-
-                window.open(url, '_blank');
-                alert(`✅ '${title}' नए टैब में खोल दिया गया है!`);
-
-                if (credits <= 0) {
-                    let msg = "आपके सभी मुफ्त क्रेडिट समाप्त हो चुके हैं। और अधिक बैकग्राउंड डाउनलोड करने के लिए कृपया प्लान लें।";
-                    speakMessage(msg);
-                    document.getElementById('library-section').style.display = 'none';
-                    document.getElementById('plans-section').style.display = 'block';
-                }
-            } else {
-                document.getElementById('library-section').style.display = 'none';
-                document.getElementById('plans-section').style.display = 'block';
-            }
-        };
-
-        window.buyPlan = function(name, credits, price) {
-            let phone = "916366920472";
-            let msg = `नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: ${activeMobile}`;
-            window.open(`https://wa.me/${phone}?text=` + encodeURIComponent(msg), '_blank');
-        };
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uday Prakash Platform</title>
+<style>
+:root{--primary:#4285F4;--primary-dark:#3367d6;--bg:#0f172a;--card:#1e293b;--muted:#94a3b8;--border:#334155;--success:#16a34a;--danger:#dc2626}
+*{box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;background:var(--bg);color:#f8fafc;margin:0}
+.header{background:#1e293b;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 10px #0005}
+.logo-area h1{font-size:18px;margin:0;text-align:left}
+.logo-area p{font-size:11px;margin:2px 0 0;color:var(--muted);text-align:left}
+.user-stats{background:var(--bg);padding:6px 14px;border-radius:20px;border:1px solid var(--border);font-size:13px;display:flex;gap:10px;align-items:center}
+.main-container{max-width:1000px;margin:20px auto;padding:0 15px 50px}
+.card{background:var(--card);padding:22px 20px;border-radius:12px;box-shadow:0 8px 25px #0005;border:1px solid var(--border);margin-bottom:20px;text-align:left}
+.form-group{margin-bottom:15px}
+label{display:block;font-weight:600;margin-bottom:6px;color:var(--muted);font-size:14px}
+input{width:100%;padding:12px;border:1px solid var(--border);border-radius:6px;font-size:15px;background:var(--bg);color:white}
+input:focus{border-color:var(--primary);outline:none}
+button{padding:12px;font-size:15px;cursor:pointer;background:var(--primary);color:white;border:0;border-radius:6px;width:100%;font-weight:bold;margin-top:5px}
+button:hover{background:var(--primary-dark)}
+.logout-btn{background:var(--danger);width:auto;margin:0;font-size:12px;padding:7px 12px}
+.hero-banner{background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:10px;padding:24px 15px;margin-bottom:20px}
+.hero-banner h2{margin:0 0 8px;font-size:20px}
+.hero-banner p{margin:0;font-size:13px;color:#e2e8f0}
+.search-bar{width:100%;padding:12px 15px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:white;font-size:14px;margin-bottom:20px}
+.plans-heading,.category-title{font-size:17px;color:#facc15;margin:0 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px;text-align:left}
+.plans-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:18px 0 25px}
+.plan-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:245px}
+.plan-card.popular{border-color:#facc15;box-shadow:0 0 15px #facc1533}
+.badge{background:#facc15;color:#000;font-size:11px;font-weight:bold;padding:3px 8px;border-radius:4px;position:absolute;top:-10px;right:15px}
+.plan-card h3{margin:5px 0 10px;font-size:18px}
+.price{font-size:24px;color:#4ade80;font-weight:bold;margin-bottom:10px}
+.features-list{font-size:13px;color:var(--muted);margin:0 0 15px;text-align:left;list-style:none;padding:0}
+.features-list li{margin:7px 0}
+.assets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:15px;margin-bottom:25px}
+.asset-box{border:1px solid var(--border);padding:12px;border-radius:8px;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.asset-box p{font-size:13px;margin:0 0 8px;color:#f1f5f9;font-weight:500}
+.asset-box img{width:100%;height:140px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.notice{font-size:12px;color:#facc15;line-height:1.5;margin-top:10px}
+.hidden{display:none!important}
+@media(max-width:520px){.header{padding:12px}.main-container{margin:14px auto}.card{padding:18px 14px}}
+</style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo-area">
-            <h1>🎨 Uday Prakash Platform</h1>
-            <p>कल्पना से साकार तक...</p>
-        </div>
-        <div id="user-stats-header" class="user-stats" style="display:none;">
-            <span>💳 क्रेडिट: <b id="credits-count" style="color: #4ade80;">5</b></span>
-        </div>
+<header class="header">
+  <div class="logo-area">
+    <h1>🎨 Uday Prakash Platform</h1>
+    <p>कल्पना से साकार तक...</p>
+  </div>
+  <div id="user-stats-header" class="user-stats hidden">
+    <span>💳 क्रेडिट: <b id="credits-count" style="color:#4ade80">5</b></span>
+    <button class="logout-btn" onclick="logoutUser()">लॉगआउट</button>
+  </div>
+</header>
+
+<main class="main-container">
+
+<section class="card" id="auth-section">
+  <h3 style="margin-top:0">सुरक्षित लॉगिन</h3>
+  <p style="color:#94a3b8;font-size:13px">अपना मोबाइल नंबर और Gmail दर्ज करें।</p>
+
+  <div class="form-group">
+    <label for="mobile-input">मोबाइल नंबर:</label>
+    <input id="mobile-input" type="tel" inputmode="numeric" maxlength="10" placeholder="10 अंकों का भारतीय मोबाइल नंबर">
+  </div>
+
+  <div class="form-group">
+    <label for="email-input">जीमेल आईडी:</label>
+    <input id="email-input" type="email" autocomplete="email" placeholder="example@gmail.com">
+  </div>
+
+  <button onclick="sendOTP()">ओटीपी प्राप्त करें</button>
+
+  <div id="otp-section" class="hidden" style="margin-top:20px;border-top:1px solid var(--border);padding-top:15px">
+    <p style="color:#facc15;font-size:13px">डेमो मोड: परीक्षण के लिए OTP <b>123456</b> है।</p>
+    <div class="form-group">
+      <label for="otp-input">6 अंकों का OTP लिखें:</label>
+      <input id="otp-input" type="text" inputmode="numeric" maxlength="6" placeholder="6 अंकों का OTP">
+    </div>
+    <button onclick="verifyAndLogin()" style="background:var(--success)">वेरीफाई और लॉगिन</button>
+  </div>
+
+  <p class="notice">ध्यान दें: यह OTP केवल डेमो है। वास्तविक SMS/ईमेल OTP भेजने और सत्यापित करने के लिए सुरक्षित सर्वर/API जोड़ना आवश्यक है।</p>
+</section>
+
+<section id="app-content" class="hidden">
+
+  <div class="hero-banner">
+    <h2>2D Cartoon Background Library</h2>
+    <p>स्वागत है: <span id="user-display-info" style="color:#facc15;font-weight:bold"></span></p>
+  </div>
+
+  <section class="card" id="plans-section">
+    <h3 class="plans-heading">💎 हमारे रिचार्ज प्लान</h3>
+
+    <div class="plans-container">
+
+      <article class="plan-card">
+        <h3>Starter Pack</h3>
+        <div class="price">₹29</div>
+        <ul class="features-list">
+          <li>✓ 15 क्रेडिट्स</li>
+          <li>✓ बैकग्राउंड डाउनलोड</li>
+          <li>✓ WhatsApp रिचार्ज सहायता</li>
+        </ul>
+        <button onclick="buyPlan('Starter Pack',15,29)">यह प्लान लें</button>
+      </article>
+
+      <article class="plan-card popular">
+        <span class="badge">लोकप्रिय</span>
+        <h3>Standard Pack</h3>
+        <div class="price">₹99</div>
+        <ul class="features-list">
+          <li>✓ 60 क्रेडिट्स</li>
+          <li>✓ बैकग्राउंड डाउनलोड</li>
+          <li>✓ WhatsApp रिचार्ज सहायता</li>
+        </ul>
+        <button onclick="buyPlan('Standard Pack',60,99)">यह प्लान लें</button>
+      </article>
+
+      <article class="plan-card">
+        <h3>Premium Pack</h3>
+        <div class="price">₹199</div>
+        <ul class="features-list">
+          <li>✓ 150 क्रेडिट्स</li>
+          <li>✓ बैकग्राउंड डाउनलोड</li>
+          <li>✓ WhatsApp रिचार्ज सहायता</li>
+        </ul>
+        <button onclick="buyPlan('Premium Pack',150,199)">यह प्लान लें</button>
+      </article>
+
     </div>
 
-    <div class="main-container">
-        <!-- लॉगिन सेक्शन -->
-        <div class="card" id="auth-section">
-            <h3 style="margin-top: 0; color: #fff;">सुरक्षित लॉगिन (हार्डवेयर प्रोटेक्टेड)</h3>
-            <p style="color: #94a3b8; font-size: 13px;">मुफ्त 5 क्रेडिट पाने के लिए अपना सही मोबाइल और जीमेल दर्ज करें:</p>
-            
-            <div class="form-group">
-                <label>मोबाइल नंबर:</label>
-                <input type="text" id="mobile-input" placeholder="10 अंकों का सही मोबाइल नंबर (6,7,8,9 से शुरू)" maxlength="10">
-            </div>
-            
-            <div class="form-group">
-                <label>जीमेल आईडी:</label>
-                <input type="email" id="email-input" placeholder="example@gmail.com">
-            </div>
+    <p class="notice">Standard और Premium की कीमत/क्रेडिट उदाहरण के तौर पर रखे गए हैं; प्रकाशित करने से पहले इन्हें अपने वास्तविक प्लान के अनुसार बदलें।</p>
+  </section>
 
-            <button onclick="sendOTP()">ओटीपी प्राप्त करें</button>
+  <section class="card" id="library-section">
+    <h3 class="plans-heading">🖼️ बैकग्राउंड लाइब्रेरी</h3>
+    <input id="search-input" class="search-bar" type="search" placeholder="🔍 हाउस, इंटीरियर या गाँव का बैकग्राउंड खोजें..." oninput="filterAssets()">
+    <div id="categories-container"></div>
+  </section>
 
-            <!-- ओटीपी बॉक्स -->
-            <div id="otp-section" style="display:none; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                <p style="color: #facc15; font-size: 13px; margin-bottom: 8px;">आपका ओटीपी है: <b>123456</b></p>
-                <div class="form-group">
-                    <label>6 अंकों का ओटीपी लिखें:</label>
-                    <input type="text" id="otp-input" placeholder="123456" maxlength="6">
-                </div>
-                <button onclick="verifyAndLogin()" style="background: var(--success);">वेरीफाई और लॉगिन</button>
-            </div>
-        </div>
+  <p id="no-credits-message" class="notice hidden">आपके मुफ्त क्रेडिट समाप्त हो चुके हैं। बैकग्राउंड डाउनलोड करने के लिए ऊपर से कोई रिचार्ज प्लान चुनें।</p>
 
-        <!-- मुख्य डैशबोर्ड -->
-        <div id="app-content" style="display:none;">
-            <div class="hero-banner">
-                <h2>2D Cartoon Background Library</h2>
-                <p>स्वागत है: <span id="user-display-info" style="color: #facc15; font-weight: bold;"></span></p>
-            </div>
+</section>
+</main>
 
-            <!-- 1. बैकग्राउंड लाइब्रेरी सेक्शन -->
-            <div id="library-section">
-                <input type="text" id="search-input" class="search-bar" placeholder="🔍 हाउस, इंटीरियर या गाँव का बैकग्राउंड खोजें..." onkeyup="fil
+<script>
+const categoriesData = [
+
+{
+ categoryName:"🏠 हाउस के अंदर (इंटीरियर)",
+ items:[
+  {name:"पञ्चायत कमरा - 1",url:"https://i.ibb.co/DgYH2XbB/IMG-20261029-WA0001.jpg"},
+  {name:"गाँव का कमरा - रात",url:"https://i.ibb.co/DPyBQ7j1/IMG-20261025-WA0000.jpg"},
+  {name:"विलेज इंटीरियर - 01",url:"https://i.ibb.co/LdfgJ9nP/IMG-20261029-WA0041.jpg"},
+  {name:"विलेज इंटीरियर - 02",url:"https://i.ibb.co/dhjGLzp/IMG-20261029-WA0035.jpg"},
+  {name:"विलेज इंटीरियर - 03",url:"https://i.ibb.co/9kZzcdZf/IMG-20261029-WA0021.jpg"},
+  {name:"इंटीरियर सेट - 04",url:"https://i.ibb.co/LDqcQ2wQ/IMG-20261029-WA0000.jpg"}
+ ]
+},
+
+{
+ categoryName:"🏡 2D कार्टून हाउस (बाहरी दृश्य)",
+ items:[
+  {name:"पञ्चायत हाउस बाहरी - 01",url:"https://i.ibb.co/BHN03K3w/IMG-20261029-WA0031.jpg"},
+  {name:"विलेज हाउस - 02",url:"https://i.ibb.co/4nJHNTNJ/IMG-20261029-WA0040.jpg"},
+  {name:"विलेज हाउस - 03",url:"https://i.ibb.co/BVFwf4Jr/IMG-20261029-WA0030.jpg"},
+  {name:"विलेज हाउस - 04",url:"https://i.ibb.co/S4msdJ1z/IMG-20261029-WA0032.jpg"},
+  {name:"विलेज हाउस - 05",url:"https://i.ibb.co/zKWm31C/IMG-20261029-WA0034.jpg"},
+  {name:"विलेज हाउस - 06",url:"https://i.ibb.co/LDqcQ2wQ/IMG-20261029-WA0000.jpg"}
+ ]
+},
+
+{
+ categoryName:"🌳 गाँव का माहौल और प्रकृति",
+ items:[
+  {name:"गाँव का हरा-भरा मैदान",url:"https://i.ibb.co/s9xBqR06/IMG-20261029-WA0042.jpg"},
+  {name:"गाँव के पेड़ और हरियाली",url:"https://i.ibb.co/k6k9Dsyz/IMG-20261029-WA0033.jpg"},
+  {name:"प्राकृतिक दृश्य - 01",url:"https://i.ibb.co/ZRtfSr4n/IMG-20261029-WA0025.jpg"},
+  {name:"प्राकृतिक दृश्य - 02",url:"https://i.ibb.co/hRpqRFkG/IMG-20261029-WA0024.jpg"},
+  {name:"प्राकृतिक दृश्य - 03",url:"https://i.ibb.co/Pv37sMZq/IMG-20261029-WA0038.jpg"},
+  {name:"गाँव का वातावरण - 04",url:"https://i.ibb.co/DPyBQ7j1/IMG-20261025-WA0000.jpg"}
+ ]
+},
+
+{
+ categoryName:"🛤️ गाँव का रास्ता और अन्य सीन्स",
+ items:[
+  {name:"गाँव का रास्ता - 01",url:"https://i.ibb.co/LdfgJ9nP/IMG-20261029-WA0041.jpg"},
+  {name:"गाँव का रास्ता - 02",url:"https://i.ibb.co/9kZzcdZf/IMG-20261029-WA0021.jpg"},
+  {name:"अन्य सीन - 01",url:"https://i.ibb.co/4nJHNTNJ/IMG-20261029-WA0040.jpg"},
+  {name:"अन्य सीन - 02",url:"https://i.ibb.co/dhjGLzp/IMG-20261029-WA0035.jpg"},
+  {name:"अन्य सीन - 03",url:"https://i.ibb.co/zKWm31C/IMG-20261029-WA0034.jpg"},
+  {name:"अन्य सीन - 04",url:"https://i.ibb.co/DgYH2XbB/IMG-20261029-WA0001.jpg"},
+  {name:"अन्य सीन - 05",url:"https://i.ibb.co/BHN03K3w/IMG-20261029-WA0031.jpg"},
+  {name:"अन्य सीन - 06",url:"https://i.ibb.co/S4msdJ1z/IMG-20261029-WA0032.jpg"},
+  {name:"अन्य सीन - 07",url:"https://i.ibb.co/k6k9Dsyz/IMG-20261029-WA0033.jpg"},
+  {name:"अन्य सीन - 08",url:"https://i.ibb.co/BVFwf4Jr/IMG-20261029-WA0030.jpg"},
+  {name:"अन्य सीन - 09",url:"https://i.ibb.co/ZRtfSr4n/IMG-20261029-WA0025.jpg"},
+  {name:"अन्य सीन - 10",url:"https://i.ibb.co/hRpqRFkG/IMG-20261029-WA0024.jpg"}
+ ]
+}
+
+];
+
+let activeMobile="";
+let activeEmail="";
+let pendingMobile="";
+let pendingEmail="";
+
+function getDeviceHardwareID(){
+ try{
+  const canvas=document.createElement("canvas");
+  const ctx=canvas.getContext("2d");
+  if(!ctx)return "DEVICE_FALLBACK";
+
+  ctx.textBaseline="top";
+  ctx.font="14px Arial";
+  ctx.fillText("UdayPrakashPlatformDeviceKey",2,2);
+
+  const signature=[
+   screen.width,
+   screen.height,
+   screen.colorDepth,
+   navigator.hardwareConcurrency||2,
+   navigator.deviceMemory||4,
+   canvas.toDataURL()
+  ].join("_");
+
+  let hash=0;
+  for(let i=0;i<signature.length;i++){
+   hash=((hash<<5)-hash)+signature.charCodeAt(i);
+   hash|=0;
+  }
+  return "DEVICE_"+Math.abs(hash);
+ }catch(e){
+  return "DEVICE_FALLBACK";
+ }
+}
+
+function speakMessage(message){
+ if("speechSynthesis" in window){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(message);
+  u.lang="hi-IN";
+  window.speechSynthesis.speak(u);
+ }
+}
+
+function sendOTP(){
+ const mobile=document.getElementById("mobile-input").value.trim();
+ const email=document.getElementById("email-input").value.trim().toLowerCase();
+
+ const mobileRegex=/^[6-9]\d{9}$/;
+ const fakePatterns=[
+  /^(\d)\1{9}$/,
+  /^1234567890$/,
+  /^9876543210$/,
+  /^0123456789$/
+ ];
+
+ if(!mobileRegex.test(mobile)||fakePatterns.some(r=>r.test(mobile))){
+  alert("❌ कृपया वैध 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें।");
+  return;
+ }
+
+ if(!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)){
+  alert("❌ कृपया सही Gmail आईडी दर्ज करें।");
+  return;
+ }
+
+ const deviceKey="uday_device_lock_"+getDeviceHardwareID();
+ const deviceRecord=localStorage.getItem(deviceKey);
+
+ if(deviceRecord){
+  try{
+   const old=JSON.parse(deviceRecord);
+
+   if(old.mobile!==mobile||old.email!==email){
+    alert("⚠️ इस ब्राउज़र/डिवाइस पर पहले से एक अकाउंट पंजीकृत है। उसी पुराने अकाउंट से लॉगिन किया जाएगा।");
+
+    document.getElementById("mobile-input").value=old.mobile;
+    document.getElementById("email-input").value=old.email;
+
+    pendingMobile=old.mobile;
+    pendingEmail=old.email;
+   }else{
+    pendingMobile=mobile;
+    pendingEmail=email;
+   }
+  }catch(e){
+   pendingMobile=mobile;
+   pendingEmail=email;
+  }
+ }else{
+  pendingMobile=mobile;
+  pendingEmail=email;
+ }
+
+ document.getElementById("otp-section").classList.remove("hidden");
+ document.getElementById("otp-input").value="";
+
+ alert("डेमो OTP तैयार है: 123456। वास्तविक OTP भेजने के लिए सर्वर/API आवश्यक है।");
+}
+
+function verifyAndLogin(){
+ const otp=document.getElementById("otp-input").value.trim();
+
+ if(!/^\d{6}$/.test(otp)||otp!=="123456"){
+  alert("❌ गलत OTP। डेमो OTP 123456 दर्ज करें।");
+  return;
+ }
+
+ if(!pendingMobile||!pendingEmail){
+  alert("पहले मोबाइल और Gmail की जाँच करके OTP प्राप्त करें।");
+  return;
+ }
+
+ const deviceKey="uday_device_lock_"+getDeviceHardwareID();
+
+ if(!localStorage.getItem(deviceKey)){
+  localStorage.setItem(deviceKey,JSON.stringify({
+   mobile:pendingMobile,
+   email:pendingEmail
+  }));
+ }
+
+ activeMobile=pendingMobile;
+ activeEmail=pendingEmail;
+
+ const accountKey="uday_account_"+activeMobile+"_"+activeEmail;
+ let account=localStorage.getItem(accountKey);
+
+ if(!account){
+  account={credits:5};
+  localStorage.setItem(accountKey,JSON.stringify(account));
+ }else{
+  try{
+   account=JSON.parse(account);
+  }catch(e){
+   account={credits:5};
+  }
+ }
+
+ if(!Number.isFinite(account.credits)||account.credits<0){
+  account.credits=0;
+ }
+
+ localStorage.setItem("uday_active_account",accountKey);
+ showDashboard(account.credits);
+
+ alert("🎉 लॉगिन सफल! आपके पास "+account.credits+" क्रेडिट्स उपलब्ध हैं।");
+}
+
+function getAccountKey(){
+ return "uday_account_"+activeMobile+"_"+activeEmail;
+}
+
+function getCredits(){
+ try{
+  const a=JSON.parse(localStorage.getItem(getAccountKey())||"{}");
+  return Number.isFinite(a.credits)?a.credits:0;
+ }catch(e){
+  return 0;
+ }
+}
+
+function saveCredits(value){
+ localStorage.setItem(getAccountKey(),JSON.stringify({credits:value}));
+}
+
+function showDashboard(credits){
+ document.getElementById("auth-section").classList.add("hidden");
+ document.getElementById("app-content").classList.remove("hidden");
+ document.getElementById("user-stats-header").classList.remove("hidden");
+
+ document.getElementById("credits-count").textContent=credits;
+ document.getElementById("user-display-info").textContent=activeMobile+" ("+activeEmail+")";
+
+ document.getElementById("plans-section").classList.remove("hidden");
+
+ document.getElementById("library-section").classList.toggle("hidden",credits<=0);
+ document.getElementById("no-credits-message").classList.toggle("hidden",credits>0);
+
+ if(credits>0){
+  renderCategories("");
+ }
+}
+
+function logoutUser(){
+ activeMobile="";
+ activeEmail="";
+ pendingMobile="";
+ pendingEmail="";
+
+ document.getElementById("app-content").classList.add("hidden");
+ document.getElementById("user-stats-header").classList.add("hidden");
+ document.getElementById("auth-section").classList.remove("hidden");
+ document.getElementById("otp-section").classList.add("hidden");
+ document.getElementById("otp-input").value="";
+}
+
+function renderCategories(filter){
+ const container=document.getElementById("categories-container");
+ if(!container)return;
+
+ container.innerHTML="";
+
+ categoriesData.forEach(cat=>{
+  const items=cat.items.filter(item=>
+   item.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  if(!items.length)return;
+
+  const section=document.createElement("section");
+
+  const heading=document.createElement("h3");
+  heading.className="category-title";
+  heading.textContent=cat.categoryName+" ("+items.length+")";
+  section.appendChild(heading);
+
+  const grid=document.createElement("div");
+  grid.className="assets-grid";
+
+  items.forEach(item=>{
+   const box=document.createElement("div");
+   box.className="asset-box";
+
+   const p=document.createElement("p");
+   p.textContent=item.name;
+
+   const img=document.createElement("img");
+   img.src=item.url;
+   img.alt=item.name;
+   img.loading="lazy";
+
+   const btn=document.createElement("button");
+   btn.textContent="डाउनलोड (1 क्रेडिट)";
+   btn.addEventListener("click",()=>{
+    downloadAsset(item.name,item.url);
+   });
+
+   box.append(p,img,btn);
+   grid.appendChild(box);
+  });
+
+  section.appendChild(grid);
+  container.appendChild(section);
+ });
+}
+
+function filterAssets(){
+ renderCategories(document.getElementById("search-input").value||"");
+}
+
+/* नया डाउनलोड सिस्टम:
+   बटन क्लिक होते ही 1 क्रेडिट कटेगा।
+   नया टैब खुलने या न खुलने से क्रेडिट वापस नहीं जुड़ेगा।
+*/
+function downloadAsset(title,url){
+
+ let credits=getCredits();
+
+ // क्रेडिट समाप्त होने पर डाउनलोड रोकें
+ if(credits<=0){
+  alert("❌ आपके अकाउंट में क्रेडिट समाप्त हो चुके हैं। कृपया रिचार्ज करें।");
+  showDashboard(0);
+  speakMessage("आपके क्रेडिट समाप्त हो चुके हैं। कृपया रिचार्ज करें।");
+  return;
+ }
+
+ // क्लिक होते ही एक क्रेडिट काटें
+ credits=credits-1;
+
+ // नया बैलेंस अकाउंट में सेव करें
+ saveCredits(credits);
+
+ // स्क्रीन पर नया बैलेंस दिखाएँ
+ document.getElementById("credits-count").textContent=credits;
+
+ // डाउनलोड के लिए इमेज खोलने की कोशिश करें
+ window.open(url,"_blank");
+
+ // यूज़र को सूचना दें
+ alert(
+  "✅ "+title+" के लिए 1 क्रेडिट काट लिया गया है।\n"+
+  "बचे हुए क्रेडिट: "+credits
+ );
+
+ // क्रेडिट खत्म होने पर लाइब्रेरी बंद करें
+ if(credits<=0){
+  showDashboard(0);
+ }
+}
+
+function buyPlan(name,credits,price){
+ if(!activeMobile){
+  alert("पहले लॉगिन करें।");
+  return;
+ }
+
+ const phone="916366920472";
+
+ const message=`नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: ${activeMobile} और Gmail: ${activeEmail}`;
+
+ window.open(
+  "https://wa.me/"+phone+"?text="+encodeURIComponent(message),
+  "_blank",
+  "noopener"
+ );
+}
+</script>
+
+</body>
+</html>
