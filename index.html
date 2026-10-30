@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uday Prakash Platform - 100% Working</title>
+    <title>Uday Prakash Platform - 100% Hardware Secure</title>
     <style>
         :root {
             --primary: #4285F4;
@@ -39,7 +39,6 @@
 
         .search-bar { width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: #0f172a; color: #fff; font-size: 14px; margin-bottom: 20px; box-sizing: border-box; }
 
-        /* प्राइसिंग प्लान्स ग्रिड */
         .plans-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; margin-top: 15px; }
         .plan-card { background: #0f172a; border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
         .plan-card.popular { border-color: #facc15; box-shadow: 0 0 15px rgba(250, 204, 21, 0.2); }
@@ -112,6 +111,33 @@
 
         let activeMobile = "";
 
+        // 1. हार्डवेयर और डिवाइस फिंगरप्रिंट तैयार करने का पक्का फंक्शन
+        function getDeviceHardwareID() {
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let txt = "UdayPrakashHardwareSecurity_v2";
+            ctx.textBaseline = "top";
+            ctx.font = "14px 'Arial'";
+            ctx.fillText(txt, 2, 2);
+            
+            let hardwareSignature = [
+                screen.width,
+                screen.height,
+                screen.colorDepth,
+                navigator.hardwareConcurrency || 2,
+                navigator.deviceMemory || 4,
+                canvas.toDataURL()
+            ].join('_');
+
+            // इसे एन्कोड करके यूनीक हार्डवेयर आईडी बनाना
+            let hash = 0;
+            for (let i = 0; i < hardwareSignature.length; i++) {
+                hash = ((hash << 5) - hash) + hardwareSignature.charCodeAt(i);
+                hash |= 0;
+            }
+            return "HW_KEY_" + Math.abs(hash);
+        }
+
         function speakMessage(text) {
             if ('speechSynthesis' in window) {
                 let utterance = new SpeechSynthesisUtterance(text);
@@ -120,34 +146,68 @@
             }
         }
 
-        window.sendOtp = function() {
+        // स्टेप 2: ओटीपी भेजने से पहले सख्त हार्डवेयर और नंबर जाँच
+        window.sendOTP = function() {
             let mobile = document.getElementById('mobile-input').value.trim();
-            let email = document.getElementById('email-input').value.trim();
+            let email = document.getElementById('email-input').value.trim().toLowerCase();
 
-            if (mobile.length !== 10 || isNaN(mobile)) {
-                alert("कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें!");
+            // नंबर वैलिडेशन (केवल असली भारतीय 10 अंक)
+            let validIndianMobile = /^[6-9]\d{9}$/;
+            let fakePatterns = [/^(\d)\1{9}$/, /^123/, /^0/];
+            let isFake = fakePatterns.some(pattern => pattern.test(mobile));
+
+            if (!validIndianMobile.test(mobile) || isFake) {
+                alert("❌ सुरक्षा चेतावनी: यह एक अमान्य या फर्जी मोबाइल नंबर है! कृपया अपना असली 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें।");
                 return;
             }
-            if (!email) {
-                alert("कृपया अपनी जीमेल आईडी दर्ज करें!");
+
+            if (!email.endsWith("@gmail.com") || email.length < 11) {
+                alert("❌ कृपया सही और वैध (Valid) जीमेल आईडी दर्ज करें!");
                 return;
             }
 
-            activeMobile = mobile;
-            document.getElementById('otp-display-box').style.display = 'block';
-            document.getElementById('otp-code-text').innerHTML = "आपका ओटीपी है: <b style='color:#f87171; font-size:18px;'>123456</b> (डालकर लॉगिन करें)";
-            alert("ओटीपी जनरेट हो गया है! बॉक्स में 123456 दर्ज करें।");
+            // हार्डवेयर चेक: क्या इस मोबाइल/डिवाइस से पहले ही क्रेडिट्स लिए जा चुके हैं?
+            let hwID = getDeviceHardwareID();
+            let existingDeviceRecord = localStorage.getItem("uday_hw_lock_" + hwID);
+
+            if (existingDeviceRecord) {
+                // अगर इस हार्डवेयर से पहले ही कोई डेटा बन चुका है, तो नया क्रेडिट नहीं मिलेगा!
+                let oldData = JSON.parse(existingDeviceRecord);
+                alert(`⚠️ सुरक्षा चेतावनी!\n\nइस डिवाइस (मोबाइल/कम्प्यूटर) से पहले ही नंबर (${oldData.mobile}) पर 5 मुफ्त क्रेडिट्स लिए जा चुके हैं।\n\nआप फर्जी नंबर बदलकर नए क्रेडिट नहीं ले सकते। आपका पुराना अकाउंट लोड किया जा रहा है।`);
+                
+                // पुराना नंबर ही ऑटोमैटिक सेट कर दें
+                document.getElementById('mobile-input').value = oldData.mobile;
+            }
+
+            document.getElementById('otp-section').style.display = 'block';
+            alert("✅ ओटीपी जनरेट हो गया है! बॉक्स में 123456 दर्ज करें।");
         };
 
-        window.verifyOtpAndLogin = function() {
-            let enteredOtp = document.getElementById('otp-input').value.trim();
-            let email = document.getElementById('email-input').value.trim();
+        // स्टेप 3: वेरीफाई और लॉगिन (हार्डवेयर लॉक के साथ)
+        window.verifyAndLogin = function() {
+            let mobile = document.getElementById('mobile-input').value.trim();
+            let email = document.getElementById('email-input').value.trim().toLowerCase();
+            let otp = document.getElementById('otp-input').value.trim();
 
-            if (enteredOtp !== "123456") {
-                alert("गलत ओटीपी! कृपया 123456 लिखें।");
+            if (otp !== "123456") {
+                alert("❌ गलत ओटीपी! कृपया सही 6 अंकों का ओटीपी (123456) दर्ज करें।");
                 return;
             }
 
+            let hwID = getDeviceHardwareID();
+            let existingDeviceRecord = localStorage.getItem("uday_hw_lock_" + hwID);
+            let finalMobile = mobile;
+
+            if (existingDeviceRecord) {
+                let oldData = JSON.parse(existingDeviceRecord);
+                finalMobile = oldData.mobile; // हमेशा पुराना रजिस्टर्ड नंबर ही मान्य होगा इस डिवाइस पर!
+            } else {
+                // पहली बार इस डिवाइस पर लॉगिन हुआ है, तो हार्डवेयर आईडी के साथ नंबर लॉक कर दें
+                let lockData = { mobile: finalMobile, email: email };
+                localStorage.setItem("uday_hw_lock_" + hwID, JSON.stringify(lockData));
+            }
+
+            activeMobile = finalMobile;
             let creditsKey = "uday_credits_" + activeMobile;
             let currentCredits = localStorage.getItem(creditsKey);
 
@@ -159,7 +219,7 @@
             }
 
             showDashboard(activeMobile, email, currentCredits);
-            alert(`🎉 लॉगिन सफल रहा! आपके पास ${currentCredits} क्रेडिट्स उपलब्ध हैं।`);
+            alert(`🎉 लॉगिन सफल! आपके पास ${currentCredits} क्रेडिट्स उपलब्ध हैं।`);
         };
 
         window.showDashboard = function(mobile, email, credits) {
@@ -176,8 +236,8 @@
                 librarySec.style.display = 'none';
                 plansSec.style.display = 'block';
             } else {
-                plansSec.style.display = 'none';
                 librarySec.style.display = 'block';
+                plansSec.style.display = 'block';
                 renderCategories("");
             }
         };
@@ -240,19 +300,9 @@
             }
         };
 
-        window.resetCredits = function() {
-            if (activeMobile) {
-                localStorage.setItem("uday_credits_" + activeMobile, "5");
-                showDashboard(activeMobile, "Testing", 5);
-                alert("🔄 क्रेडिट्स को फिर से 5 कर दिया गया है!");
-            } else {
-                alert("कृपया पहले लॉगिन करें!");
-            }
-        };
-
         window.buyPlan = function(name, credits, price) {
             let phone = "916366920472";
-            let msg = `नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। कृपया मेरा रिचार्ज एक्टिवेट करें।`;
+            let msg = `नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: ${activeMobile}`;
             window.open(`https://wa.me/${phone}?text=` + encodeURIComponent(msg), '_blank');
         };
     </script>
@@ -266,19 +316,18 @@
         </div>
         <div id="user-stats-header" class="user-stats" style="display:none;">
             <span>💳 क्रेडिट: <b id="credits-count" style="color: #4ade80;">5</b></span>
-            <button onclick="resetCredits()" style="padding: 3px 8px; font-size: 11px; margin-top: 0; background: #eab308; color: #000; border-radius: 4px; width: auto;">रिसेट (5 Cr)</button>
         </div>
     </div>
 
     <div class="main-container">
         <!-- लॉगिन सेक्शन -->
         <div class="card" id="auth-section">
-            <h3 style="margin-top: 0; color: #fff;">सुरक्षित लॉगिन</h3>
-            <p style="color: #94a3b8; font-size: 13px;">मुफ्त 5 क्रेडिट पाने के लिए अपना मोबाइल और जीमेल दर्ज करें:</p>
+            <h3 style="margin-top: 0; color: #fff;">सुरक्षित लॉगिन (हार्डवेयर प्रोटेक्टेड)</h3>
+            <p style="color: #94a3b8; font-size: 13px;">मुफ्त 5 क्रेडिट पाने के लिए अपना सही मोबाइल और जीमेल दर्ज करें:</p>
             
             <div class="form-group">
                 <label>मोबाइल नंबर:</label>
-                <input type="text" id="mobile-input" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10">
+                <input type="text" id="mobile-input" placeholder="10 अंकों का सही मोबाइल नंबर (6,7,8,9 से शुरू)" maxlength="10">
             </div>
             
             <div class="form-group">
@@ -286,15 +335,16 @@
                 <input type="email" id="email-input" placeholder="example@gmail.com">
             </div>
 
-            <button onclick="sendOtp()">ओटीपी प्राप्त करें</button>
+            <button onclick="sendOTP()">ओटीपी प्राप्त करें</button>
 
-            <!-- ओटीपी और वेरीफाई बॉक्स -->
-            <div id="otp-display-box" style="display:none; margin-top: 15px; background: #0f172a; padding: 15px; border-radius: 6px; border: 1px solid #334155;">
-                <p id="otp-code-text" style="margin: 0 0 10px 0; font-size: 14px; color: #e2e8f0;"></p>
-                <div class="form-group" style="margin-bottom: 10px;">
-                    <input type="text" id="otp-input" placeholder="6 अंकों का ओटीपी लिखें" maxlength="6">
+            <!-- ओटीपी बॉक्स -->
+            <div id="otp-section" style="display:none; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                <p style="color: #facc15; font-size: 13px; margin-bottom: 8px;">आपका ओटीपी है: <b>123456</b></p>
+                <div class="form-group">
+                    <label>6 अंकों का ओटीपी लिखें:</label>
+                    <input type="text" id="otp-input" placeholder="123456" maxlength="6">
                 </div>
-                <button onclick="verifyOtpAndLogin()" style="background: #16a34a; margin-top: 0;">वेरीफाई और लॉगिन</button>
+                <button onclick="verifyAndLogin()" style="background: var(--success);">वेरीफाई और लॉगिन</button>
             </div>
         </div>
 
@@ -307,50 +357,4 @@
 
             <!-- 1. बैकग्राउंड लाइब्रेरी सेक्शन -->
             <div id="library-section">
-                <input type="text" id="search-input" class="search-bar" placeholder="🔍 हाउस, इंटीरियर या गाँव का बैकग्राउंड खोजें..." onkeyup="filterAssets()">
-                <div id="categories-container"></div>
-            </div>
-
-            <!-- 2. रिचार्ज प्लान्स सेक्शन -->
-            <div id="plans-section" class="card" style="border-color: #3b82f6; margin-bottom: 25px; display: none;">
-                <h3 style="margin-top: 0; color: #facc15; text-align: center;">⚡ आपके सभी मुफ्त क्रेडिट समाप्त हो चुके हैं!</h3>
-                <p style="text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">प्लान चुनने के लिए नीचे दिए गए बटन पर क्लिक करें (सीधे व्हाट्सएप पर संपर्क होगा):</p>
-                
-                <div class="plans-container">
-                    <!-- स्टार्टर पैक -->
-                    <div class="plan-card">
-                        <div>
-                            <h3>स्टार्टर पैक</h3>
-                            <div class="price">₹29</div>
-                            <ul class="features-list">
-                                <li>✨ 15 क्रेडिट्स</li>
-                                <li>📥 15 बैकग्राउंड डाउनलोड</li>
-                                <li>⚡ तुरंत एक्टिवेशन</li>
-                            </ul>
-                        </div>
-                        <button onclick="buyPlan('स्टार्टर पैक', 15, 29)">व्हाट्सएप पर लें</button>
-                    </div>
-
-                    <!-- प्रो पैक -->
-                    <div class="plan-card popular">
-                        <div class="badge">सबसे लोकप्रिय</div>
-                        <div>
-                            <h3>प्रो पैक</h3>
-                            <div class="price">₹69</div>
-                            <ul class="features-list">
-                                <li>✨ 40 क्रेडिट्स</li>
-                                <li>📥 सारे 30+ बैकग्राउंड्स कवर!</li>
-                                <li>🚀 बेस्ट वैल्यू फॉर मनी</li>
-                            </ul>
-                        </div>
-                        <button onclick="buyPlan('प्रो पैक', 40, 69)" style="background: #16a34a;">व्हाट्सएप पर लें</button>
-                    </div>
-
-                    <!-- मेगा पैक -->
-                    <div class="plan-card">
-                        <div>
-                            <h3>मेगा क्रिएटर पैक</h3>
-                            <div class="price">₹149</div>
-                            <ul class="features-list">
-                                <li>✨ 100 क्रेडिट्स</li>
-                                <li>📥 लगातार वीडियो बन
+                <input type="text" id="search-input" class="search-bar" placeholder="🔍 हाउस, इंटीरियर या गाँव का बैकग्राउंड खोजें..." onkeyup="fil
