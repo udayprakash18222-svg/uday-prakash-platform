@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uday Prakash Platform</title>
+<title>Uday Prakash Platform - 2D Cartoon Backgrounds</title>
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Uday Prakash Platform पर 2D कार्टून एनिमेशन और वीडियो बनाने के लिए बेहतरीन बैकग्राउंड लाइब्रेरी और इंटीरियर सीन्स मुफ्त में प्राप्त करें।">
+<meta name="keywords" content="Uday Prakash Platform, 2D Cartoon Background, Panchayat Background, Animation Assets, Village Backgrounds, कार्टून बैकग्राउंड">
+<meta name="author" content="Uday Prakash">
+
 <style>
 :root{--primary:#4285F4;--primary-dark:#3367d6;--bg:#0f172a;--card:#1e293b;--muted:#94a3b8;--border:#334155;--success:#16a34a;--danger:#dc2626}
 *{box-sizing:border-box}
@@ -224,12 +230,11 @@ function getDeviceHardwareID() {
   }
 }
 
-// जैसे ही यूजर स्क्रीन पर पहली बार टच या क्लिक करेगा, पूरा स्वागत संदेश अपने-आप बज उठेगा
 function triggerAutoVoiceOnce() {
   if (voicePlayed) return;
   if ("speechSynthesis" in window) {
     window.speechSynthesis.cancel();
-    const text = "उदय प्रकाश वेबसाइट में आप सबका हार्दिक स्वागत है। हमारी वेबसाइट को ओपन करने के लिए कृपया अपना 10 अंकों का मोबाइल नंबर और जीमेल आईडी दर्ज करें। यह 6 अंकों का ओटीपी आपको याद रखना है, कभी भी दोबारा आने पर यही 6 अंकों का ओटीपी आपको डालना होगा। धन्यवाद। हमारे उदय प्रकाश वेबसाइट पर आपका स्वागत है।";
+    const text = "उदय प्रकाश वेबसाइट में आपका स्वागत है। कृपया अपना 10 अंकों का मोबाइल नंबर और जीमेल आईडी दर्ज करें।";
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "hi-IN";
     utterance.rate = 0.9;
@@ -252,15 +257,14 @@ function proceedToFixedOTP() {
     return;
   }
 
-  // एंटी-चीट लॉक: एक डिवाइस पर फर्जी नंबर से बार-बार क्रेडिट लूटने पर रोक
   const deviceKey = getDeviceHardwareID();
   const existingOwner = localStorage.getItem(deviceKey);
 
   if (existingOwner) {
     try {
       const ownerData = JSON.parse(existingOwner);
-      if (ownerData.mobile !== mobile || ownerData.email !== email) {
-        alert("⚠️ सुरक्षा चेतावनी: इस डिवाइस पर पहले से ही एक अकाउंट (" + ownerData.mobile + ") पंजीकृत है। आप फर्जी नंबर बदलकर दोबारा 5 क्रेडिट नहीं लूट सकते! आपको अपने मूल पंजीकृत खाते से ही लॉगिन करना होगा।");
+      if (ownerData.mobile && ownerData.mobile !== mobile) {
+        alert("⚠️ सुरक्षा चेतावनी: इस डिवाइस पर पहले से ही एक अकाउंट (" + ownerData.mobile + ") पंजीकृत है। आप फर्जी नंबर बदलकर दोबारा 5 क्रेडिट नहीं लूट सकते!");
         document.getElementById("mobile-input").value = ownerData.mobile;
         document.getElementById("email-input").value = ownerData.email;
         pendingMobile = ownerData.mobile;
@@ -280,7 +284,7 @@ function proceedToFixedOTP() {
 
   document.getElementById("otp-section").classList.remove("hidden");
   document.getElementById("otp-input").value = "";
-  alert("सफलता! अब अपने इस अकाउंट के लिए 6 अंकों का फिक्स पिन (OTP) दर्ज करें जो आपको हमेशा याद रखना है।");
+  alert("सफलता! अब अपने इस अकाउंट के लिए 6 अंकों का फिक्स पिन (OTP) दर्ज करें।");
 }
 
 function verifyAndLoginFixed() {
@@ -291,6 +295,7 @@ function verifyAndLoginFixed() {
     return;
   }
 
+  const deviceKey = getDeviceHardwareID();
   const userCredKey = "uday_secure_user_" + pendingMobile + "_" + pendingEmail;
   let savedUserData = localStorage.getItem(userCredKey);
 
@@ -308,7 +313,7 @@ function verifyAndLoginFixed() {
       email: pendingEmail,
       fixedOtp: otp
     }));
-    localStorage.setItem(getDeviceHardwareID(), JSON.stringify({
+    localStorage.setItem(deviceKey, JSON.stringify({
       mobile: pendingMobile,
       email: pendingEmail
     }));
@@ -461,7 +466,7 @@ function buyPlan(name, credits, price) {
     return;
   }
   const phone = "916366920472";
-  const message = `नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: ${activeMobile} और Gmail: ${activeEmail}`;
+  const message = "नमस्ते, मैं 'Uday Prakash Platform' पर " + name + " (₹" + price + " - " + credits + " क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: " + activeMobile + " और Gmail: " + activeEmail;
   window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(message), "_blank", "noopener");
 }
 </script>
