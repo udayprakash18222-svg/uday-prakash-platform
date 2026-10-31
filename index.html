@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -44,7 +43,7 @@ button:hover{background:var(--primary-dark)}
 @media(max-width:520px){.header{padding:12px}.main-container{margin:14px auto}.card{padding:18px 14px}}
 </style>
 </head>
-<body>
+<body onclick="triggerAutoVoiceOnce()">
 
 <header class="header">
   <div class="logo-area">
@@ -60,8 +59,8 @@ button:hover{background:var(--primary-dark)}
 <main class="main-container">
 
 <section class="card" id="auth-section">
-  <h3 style="margin-top:0">सुरक्षित लॉगिन</h3>
-  <p style="color:#94a3b8;font-size:13px">अपना मोबाइल नंबर और Gmail दर्ज करें।</p>
+  <h3 style="margin-top:0">🔒 हार्ड एंटी-चीट लॉगिन सिस्टम</h3>
+  <p style="color:#94a3b8;font-size:13px">कृपया अपना 10 अंकों का मोबाइल नंबर और जीमेल आईडी दर्ज करें। एक डिवाइस पर केवल एक ही अकाउंट वैध है।</p>
 
   <div class="form-group">
     <label for="mobile-input">मोबाइल नंबर:</label>
@@ -73,22 +72,19 @@ button:hover{background:var(--primary-dark)}
     <input id="email-input" type="email" autocomplete="email" placeholder="example@gmail.com">
   </div>
 
-  <button onclick="sendOTP()">ओटीपी प्राप्त करें</button>
+  <button onclick="proceedToFixedOTP()">आगे बढ़ें और 6 अंकों का फिक्स OTP सेट करें</button>
 
   <div id="otp-section" class="hidden" style="margin-top:20px;border-top:1px solid var(--border);padding-top:15px">
-    <p style="color:#facc15;font-size:13px">डेमो मोड: परीक्षण के लिए OTP <b>123456</b> है।</p>
+    <p style="color:#facc15;font-size:13px">नोट: यह 6 अंकों का OTP आपके इस अकाउंट के लिए हमेशा के लिए फिक्स हो जाएगा। दोबारा आने पर यही डालना होगा।</p>
     <div class="form-group">
-      <label for="otp-input">6 अंकों का OTP लिखें:</label>
-      <input id="otp-input" type="text" inputmode="numeric" maxlength="6" placeholder="6 अंकों का OTP">
+      <label for="otp-input">अपना फिक्स 6 अंकों का OTP दर्ज करें:</label>
+      <input id="otp-input" type="password" inputmode="numeric" maxlength="6" placeholder="6 अंकों का गुप्त पिन/OTP">
     </div>
-    <button onclick="verifyAndLogin()" style="background:var(--success)">वेरीफाई और लॉगिन</button>
+    <button onclick="verifyAndLoginFixed()" style="background:var(--success)">वेरीफाई और लॉगिन करें</button>
   </div>
-
-  <p class="notice">ध्यान दें: यह OTP केवल डेमो है। वास्तविक SMS/ईमेल OTP भेजने और सत्यापित करने के लिए सुरक्षित सर्वर/API जोड़ना आवश्यक है।</p>
 </section>
 
 <section id="app-content" class="hidden">
-
   <div class="hero-banner">
     <h2>2D Cartoon Background Library</h2>
     <p>स्वागत है: <span id="user-display-info" style="color:#facc15;font-weight:bold"></span></p>
@@ -96,9 +92,7 @@ button:hover{background:var(--primary-dark)}
 
   <section class="card" id="plans-section">
     <h3 class="plans-heading">💎 हमारे रिचार्ज प्लान</h3>
-
     <div class="plans-container">
-
       <article class="plan-card">
         <h3>Starter Pack</h3>
         <div class="price">₹29</div>
@@ -132,10 +126,7 @@ button:hover{background:var(--primary-dark)}
         </ul>
         <button onclick="buyPlan('Premium Pack',150,199)">यह प्लान लें</button>
       </article>
-
     </div>
-
-    <p class="notice">Standard और Premium की कीमत/क्रेडिट उदाहरण के तौर पर रखे गए हैं; प्रकाशित करने से पहले इन्हें अपने वास्तविक प्लान के अनुसार बदलें।</p>
   </section>
 
   <section class="card" id="library-section">
@@ -145,52 +136,47 @@ button:hover{background:var(--primary-dark)}
   </section>
 
   <p id="no-credits-message" class="notice hidden">आपके मुफ्त क्रेडिट समाप्त हो चुके हैं। बैकग्राउंड डाउनलोड करने के लिए ऊपर से कोई रिचार्ज प्लान चुनें।</p>
-
 </section>
 </main>
 
 <script>
 const categoriesData = [
-
 {
- categoryName:"🏠 हाउस के अंदर (इंटीरियर)",
- items:[
+categoryName:"🏠 हाउस के अंदर (इंटीरियर)",
+items:[
   {name:"पञ्चायत कमरा - 1",url:"https://i.ibb.co/DgYH2XbB/IMG-20261029-WA0001.jpg"},
   {name:"गाँव का कमरा - रात",url:"https://i.ibb.co/DPyBQ7j1/IMG-20261025-WA0000.jpg"},
   {name:"विलेज इंटीरियर - 01",url:"https://i.ibb.co/LdfgJ9nP/IMG-20261029-WA0041.jpg"},
   {name:"विलेज इंटीरियर - 02",url:"https://i.ibb.co/dhjGLzp/IMG-20261029-WA0035.jpg"},
   {name:"विलेज इंटीरियर - 03",url:"https://i.ibb.co/9kZzcdZf/IMG-20261029-WA0021.jpg"},
   {name:"इंटीरियर सेट - 04",url:"https://i.ibb.co/LDqcQ2wQ/IMG-20261029-WA0000.jpg"}
- ]
+]
 },
-
 {
- categoryName:"🏡 2D कार्टून हाउस (बाहरी दृश्य)",
- items:[
+categoryName:"🏡 2D कार्टून हाउस (बाहरी दृश्य)",
+items:[
   {name:"पञ्चायत हाउस बाहरी - 01",url:"https://i.ibb.co/BHN03K3w/IMG-20261029-WA0031.jpg"},
   {name:"विलेज हाउस - 02",url:"https://i.ibb.co/4nJHNTNJ/IMG-20261029-WA0040.jpg"},
   {name:"विलेज हाउस - 03",url:"https://i.ibb.co/BVFwf4Jr/IMG-20261029-WA0030.jpg"},
   {name:"विलेज हाउस - 04",url:"https://i.ibb.co/S4msdJ1z/IMG-20261029-WA0032.jpg"},
   {name:"विलेज हाउस - 05",url:"https://i.ibb.co/zKWm31C/IMG-20261029-WA0034.jpg"},
   {name:"विलेज हाउस - 06",url:"https://i.ibb.co/LDqcQ2wQ/IMG-20261029-WA0000.jpg"}
- ]
+]
 },
-
 {
- categoryName:"🌳 गाँव का माहौल और प्रकृति",
- items:[
+categoryName:"🌳 गाँव का माहौल और प्रकृति",
+items:[
   {name:"गाँव का हरा-भरा मैदान",url:"https://i.ibb.co/s9xBqR06/IMG-20261029-WA0042.jpg"},
   {name:"गाँव के पेड़ और हरियाली",url:"https://i.ibb.co/k6k9Dsyz/IMG-20261029-WA0033.jpg"},
   {name:"प्राकृतिक दृश्य - 01",url:"https://i.ibb.co/ZRtfSr4n/IMG-20261029-WA0025.jpg"},
   {name:"प्राकृतिक दृश्य - 02",url:"https://i.ibb.co/hRpqRFkG/IMG-20261029-WA0024.jpg"},
   {name:"प्राकृतिक दृश्य - 03",url:"https://i.ibb.co/Pv37sMZq/IMG-20261029-WA0038.jpg"},
   {name:"गाँव का वातावरण - 04",url:"https://i.ibb.co/DPyBQ7j1/IMG-20261025-WA0000.jpg"}
- ]
+]
 },
-
 {
- categoryName:"🛤️ गाँव का रास्ता और अन्य सीन्स",
- items:[
+categoryName:"🛤️ गाँव का रास्ता और अन्य सीन्स",
+items:[
   {name:"गाँव का रास्ता - 01",url:"https://i.ibb.co/LdfgJ9nP/IMG-20261029-WA0041.jpg"},
   {name:"गाँव का रास्ता - 02",url:"https://i.ibb.co/9kZzcdZf/IMG-20261029-WA0021.jpg"},
   {name:"अन्य सीन - 01",url:"https://i.ibb.co/4nJHNTNJ/IMG-20261029-WA0040.jpg"},
@@ -203,317 +189,280 @@ const categoriesData = [
   {name:"अन्य सीन - 08",url:"https://i.ibb.co/BVFwf4Jr/IMG-20261029-WA0030.jpg"},
   {name:"अन्य सीन - 09",url:"https://i.ibb.co/ZRtfSr4n/IMG-20261029-WA0025.jpg"},
   {name:"अन्य सीन - 10",url:"https://i.ibb.co/hRpqRFkG/IMG-20261029-WA0024.jpg"}
- ]
+]
 }
-
 ];
 
-let activeMobile="";
-let activeEmail="";
-let pendingMobile="";
-let pendingEmail="";
+let activeMobile = "";
+let activeEmail = "";
+let pendingMobile = "";
+let pendingEmail = "";
+let voicePlayed = false;
 
-function getDeviceHardwareID(){
- try{
-  const canvas=document.createElement("canvas");
-  const ctx=canvas.getContext("2d");
-  if(!ctx)return "DEVICE_FALLBACK";
-
-  ctx.textBaseline="top";
-  ctx.font="14px Arial";
-  ctx.fillText("UdayPrakashPlatformDeviceKey",2,2);
-
-  const signature=[
-   screen.width,
-   screen.height,
-   screen.colorDepth,
-   navigator.hardwareConcurrency||2,
-   navigator.deviceMemory||4,
-   canvas.toDataURL()
-  ].join("_");
-
-  let hash=0;
-  for(let i=0;i<signature.length;i++){
-   hash=((hash<<5)-hash)+signature.charCodeAt(i);
-   hash|=0;
+function getDeviceHardwareID() {
+  try {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return "DEVICE_FALLBACK_ID";
+    ctx.textBaseline = "top";
+    ctx.font = "14px Arial";
+    ctx.fillText("UdayPrakashStrictSecurityKey2026", 2, 2);
+    const signature = [
+      screen.width, screen.height, screen.colorDepth,
+      navigator.hardwareConcurrency || 2,
+      navigator.deviceMemory || 4,
+      canvas.toDataURL()
+    ].join("_");
+    let hash = 0;
+    for (let i = 0; i < signature.length; i++) {
+      hash = ((hash << 5) - hash) + signature.charCodeAt(i);
+      hash |= 0;
+    }
+    return "UDAY_DEVICE_LOCKED_" + Math.abs(hash);
+  } catch (e) {
+    return "UDAY_DEVICE_FALLBACK_LOCK";
   }
-  return "DEVICE_"+Math.abs(hash);
- }catch(e){
-  return "DEVICE_FALLBACK";
- }
 }
 
-function speakMessage(message){
- if("speechSynthesis" in window){
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(message);
-  u.lang="hi-IN";
-  window.speechSynthesis.speak(u);
- }
-}
-
-function sendOTP(){
- const mobile=document.getElementById("mobile-input").value.trim();
- const email=document.getElementById("email-input").value.trim().toLowerCase();
-
- const mobileRegex=/^[6-9]\d{9}$/;
- const fakePatterns=[
-  /^(\d)\1{9}$/,
-  /^1234567890$/,
-  /^9876543210$/,
-  /^0123456789$/
- ];
-
- if(!mobileRegex.test(mobile)||fakePatterns.some(r=>r.test(mobile))){
-  alert("❌ कृपया वैध 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें।");
-  return;
- }
-
- if(!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)){
-  alert("❌ कृपया सही Gmail आईडी दर्ज करें।");
-  return;
- }
-
- const deviceKey="uday_device_lock_"+getDeviceHardwareID();
- const deviceRecord=localStorage.getItem(deviceKey);
-
- if(deviceRecord){
-  try{
-   const old=JSON.parse(deviceRecord);
-
-   if(old.mobile!==mobile||old.email!==email){
-    alert("⚠️ इस ब्राउज़र/डिवाइस पर पहले से एक अकाउंट पंजीकृत है। उसी पुराने अकाउंट से लॉगिन किया जाएगा।");
-
-    document.getElementById("mobile-input").value=old.mobile;
-    document.getElementById("email-input").value=old.email;
-
-    pendingMobile=old.mobile;
-    pendingEmail=old.email;
-   }else{
-    pendingMobile=mobile;
-    pendingEmail=email;
-   }
-  }catch(e){
-   pendingMobile=mobile;
-   pendingEmail=email;
+// जैसे ही यूजर स्क्रीन पर पहली बार टच या क्लिक करेगा, पूरा स्वागत संदेश अपने-आप बज उठेगा
+function triggerAutoVoiceOnce() {
+  if (voicePlayed) return;
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    const text = "उदय प्रकाश वेबसाइट में आप सबका हार्दिक स्वागत है। हमारी वेबसाइट को ओपन करने के लिए कृपया अपना 10 अंकों का मोबाइल नंबर और जीमेल आईडी दर्ज करें। यह 6 अंकों का ओटीपी आपको याद रखना है, कभी भी दोबारा आने पर यही 6 अंकों का ओटीपी आपको डालना होगा। धन्यवाद। हमारे उदय प्रकाश वेबसाइट पर आपका स्वागत है।";
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "hi-IN";
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+    voicePlayed = true;
   }
- }else{
-  pendingMobile=mobile;
-  pendingEmail=email;
- }
-
- document.getElementById("otp-section").classList.remove("hidden");
- document.getElementById("otp-input").value="";
-
- alert("डेमो OTP तैयार है: 123456। वास्तविक OTP भेजने के लिए सर्वर/API आवश्यक है।");
 }
 
-function verifyAndLogin(){
- const otp=document.getElementById("otp-input").value.trim();
+function proceedToFixedOTP() {
+  const mobile = document.getElementById("mobile-input").value.trim();
+  const email = document.getElementById("email-input").value.trim().toLowerCase();
 
- if(!/^\d{6}$/.test(otp)||otp!=="123456"){
-  alert("❌ गलत OTP। डेमो OTP 123456 दर्ज करें।");
-  return;
- }
-
- if(!pendingMobile||!pendingEmail){
-  alert("पहले मोबाइल और Gmail की जाँच करके OTP प्राप्त करें।");
-  return;
- }
-
- const deviceKey="uday_device_lock_"+getDeviceHardwareID();
-
- if(!localStorage.getItem(deviceKey)){
-  localStorage.setItem(deviceKey,JSON.stringify({
-   mobile:pendingMobile,
-   email:pendingEmail
-  }));
- }
-
- activeMobile=pendingMobile;
- activeEmail=pendingEmail;
-
- const accountKey="uday_account_"+activeMobile+"_"+activeEmail;
- let account=localStorage.getItem(accountKey);
-
- if(!account){
-  account={credits:5};
-  localStorage.setItem(accountKey,JSON.stringify(account));
- }else{
-  try{
-   account=JSON.parse(account);
-  }catch(e){
-   account={credits:5};
+  const mobileRegex = /^[6-9]\d{9}$/;
+  if (!mobileRegex.test(mobile)) {
+    alert("❌ कृपया सही 10 अंकों का भारतीय मोबाइल नंबर दर्ज करें।");
+    return;
   }
- }
+  if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+    alert("❌ कृपया वैध Gmail आईडी दर्ज करें।");
+    return;
+  }
 
- if(!Number.isFinite(account.credits)||account.credits<0){
-  account.credits=0;
- }
+  // एंटी-चीट लॉक: एक डिवाइस पर फर्जी नंबर से बार-बार क्रेडिट लूटने पर रोक
+  const deviceKey = getDeviceHardwareID();
+  const existingOwner = localStorage.getItem(deviceKey);
 
- localStorage.setItem("uday_active_account",accountKey);
- showDashboard(account.credits);
+  if (existingOwner) {
+    try {
+      const ownerData = JSON.parse(existingOwner);
+      if (ownerData.mobile !== mobile || ownerData.email !== email) {
+        alert("⚠️ सुरक्षा चेतावनी: इस डिवाइस पर पहले से ही एक अकाउंट (" + ownerData.mobile + ") पंजीकृत है। आप फर्जी नंबर बदलकर दोबारा 5 क्रेडिट नहीं लूट सकते! आपको अपने मूल पंजीकृत खाते से ही लॉगिन करना होगा।");
+        document.getElementById("mobile-input").value = ownerData.mobile;
+        document.getElementById("email-input").value = ownerData.email;
+        pendingMobile = ownerData.mobile;
+        pendingEmail = ownerData.email;
+      } else {
+        pendingMobile = mobile;
+        pendingEmail = email;
+      }
+    } catch (e) {
+      pendingMobile = mobile;
+      pendingEmail = email;
+    }
+  } else {
+    pendingMobile = mobile;
+    pendingEmail = email;
+  }
 
- alert("🎉 लॉगिन सफल! आपके पास "+account.credits+" क्रेडिट्स उपलब्ध हैं।");
+  document.getElementById("otp-section").classList.remove("hidden");
+  document.getElementById("otp-input").value = "";
+  alert("सफलता! अब अपने इस अकाउंट के लिए 6 अंकों का फिक्स पिन (OTP) दर्ज करें जो आपको हमेशा याद रखना है।");
 }
 
-function getAccountKey(){
- return "uday_account_"+activeMobile+"_"+activeEmail;
+function verifyAndLoginFixed() {
+  const otp = document.getElementById("otp-input").value.trim();
+
+  if (!/^\d{6}$/.test(otp)) {
+    alert("❌ कृपया ठीक 6 अंकों का संख्यात्मक (Numeric) OTP दर्ज करें।");
+    return;
+  }
+
+  const userCredKey = "uday_secure_user_" + pendingMobile + "_" + pendingEmail;
+  let savedUserData = localStorage.getItem(userCredKey);
+
+  if (savedUserData) {
+    try {
+      let data = JSON.parse(savedUserData);
+      if (data.fixedOtp !== otp) {
+        alert("❌ गलत OTP! इस मोबाइल और जीमेल के लिए जो फिक्स OTP पहले सेट किया गया था, वही दर्ज करें।");
+        return;
+      }
+    } catch (e) {}
+  } else {
+    localStorage.setItem(userCredKey, JSON.stringify({
+      mobile: pendingMobile,
+      email: pendingEmail,
+      fixedOtp: otp
+    }));
+    localStorage.setItem(getDeviceHardwareID(), JSON.stringify({
+      mobile: pendingMobile,
+      email: pendingEmail
+    }));
+    alert("🔒 आपका यह 6 अंकों का OTP और डिवाइस लॉक हमेशा के लिए सुरक्षित कर दिया गया है!");
+  }
+
+  activeMobile = pendingMobile;
+  activeEmail = pendingEmail;
+
+  const accountKey = "uday_account_" + activeMobile + "_" + activeEmail;
+  let account = localStorage.getItem(accountKey);
+
+  if (!account) {
+    account = { credits: 5 };
+    localStorage.setItem(accountKey, JSON.stringify(account));
+  } else {
+    try { account = JSON.parse(account); } catch(e) { account = { credits: 5 }; }
+  }
+
+  localStorage.setItem("uday_active_account", accountKey);
+  showDashboard(account.credits);
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+    const welcomeBack = new SpeechSynthesisUtterance("उदय प्रकाश वेबसाइट पर आपका स्वागत है।");
+    welcomeBack.lang = "hi-IN";
+    window.speechSynthesis.speak(welcomeBack);
+  }
+
+  alert("🎉 लॉगिन सफल! आपके पास " + account.credits + " क्रेडिट्स उपलब्ध हैं।");
 }
 
-function getCredits(){
- try{
-  const a=JSON.parse(localStorage.getItem(getAccountKey())||"{}");
-  return Number.isFinite(a.credits)?a.credits:0;
- }catch(e){
-  return 0;
- }
+function getAccountKey() {
+  return "uday_account_" + activeMobile + "_" + activeEmail;
 }
 
-function saveCredits(value){
- localStorage.setItem(getAccountKey(),JSON.stringify({credits:value}));
+function getCredits() {
+  try {
+    const a = JSON.parse(localStorage.getItem(getAccountKey()) || "{}");
+    return Number.isFinite(a.credits) ? a.credits : 0;
+  } catch (e) { return 0; }
 }
 
-function showDashboard(credits){
- document.getElementById("auth-section").classList.add("hidden");
- document.getElementById("app-content").classList.remove("hidden");
- document.getElementById("user-stats-header").classList.remove("hidden");
-
- document.getElementById("credits-count").textContent=credits;
- document.getElementById("user-display-info").textContent=activeMobile+" ("+activeEmail+")";
-
- document.getElementById("plans-section").classList.remove("hidden");
-
- document.getElementById("library-section").classList.toggle("hidden",credits<=0);
- document.getElementById("no-credits-message").classList.toggle("hidden",credits>0);
-
- if(credits>0){
-  renderCategories("");
- }
+function saveCredits(value) {
+  localStorage.setItem(getAccountKey(), JSON.stringify({ credits: value }));
 }
 
-function logoutUser(){
- activeMobile="";
- activeEmail="";
- pendingMobile="";
- pendingEmail="";
+function showDashboard(credits) {
+  document.getElementById("auth-section").classList.add("hidden");
+  document.getElementById("app-content").classList.remove("hidden");
+  document.getElementById("user-stats-header").classList.remove("hidden");
 
- document.getElementById("app-content").classList.add("hidden");
- document.getElementById("user-stats-header").classList.add("hidden");
- document.getElementById("auth-section").classList.remove("hidden");
- document.getElementById("otp-section").classList.add("hidden");
- document.getElementById("otp-input").value="";
+  document.getElementById("credits-count").textContent = credits;
+  document.getElementById("user-display-info").textContent = activeMobile + " (" + activeEmail + ")";
+
+  document.getElementById("plans-section").classList.remove("hidden");
+  document.getElementById("library-section").classList.toggle("hidden", credits <= 0);
+  document.getElementById("no-credits-message").classList.toggle("hidden", credits > 0);
+
+  if (credits > 0) {
+    renderCategories("");
+  }
 }
 
-function renderCategories(filter){
- const container=document.getElementById("categories-container");
- if(!container)return;
+function logoutUser() {
+  activeMobile = "";
+  activeEmail = "";
+  pendingMobile = "";
+  pendingEmail = "";
 
- container.innerHTML="";
+  document.getElementById("app-content").classList.add("hidden");
+  document.getElementById("user-stats-header").classList.add("hidden");
+  document.getElementById("auth-section").classList.remove("hidden");
+  document.getElementById("otp-section").classList.add("hidden");
+  document.getElementById("otp-input").value = "";
+  document.getElementById("mobile-input").value = "";
+  document.getElementById("email-input").value = "";
+}
 
- categoriesData.forEach(cat=>{
-  const items=cat.items.filter(item=>
-   item.name.toLowerCase().includes(filter.toLowerCase())
-  );
+function renderCategories(filter) {
+  const container = document.getElementById("categories-container");
+  if (!container) return;
+  container.innerHTML = "";
 
-  if(!items.length)return;
+  categoriesData.forEach(cat => {
+    const items = cat.items.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
+    if (!items.length) return;
 
-  const section=document.createElement("section");
+    const section = document.createElement("section");
+    const heading = document.createElement("h3");
+    heading.className = "category-title";
+    heading.textContent = cat.categoryName + " (" + items.length + ")";
+    section.appendChild(heading);
 
-  const heading=document.createElement("h3");
-  heading.className="category-title";
-  heading.textContent=cat.categoryName+" ("+items.length+")";
-  section.appendChild(heading);
+    const grid = document.createElement("div");
+    grid.className = "assets-grid";
 
-  const grid=document.createElement("div");
-  grid.className="assets-grid";
+    items.forEach(item => {
+      const box = document.createElement("div");
+      box.className = "asset-box";
 
-  items.forEach(item=>{
-   const box=document.createElement("div");
-   box.className="asset-box";
+      const p = document.createElement("p");
+      p.textContent = item.name;
 
-   const p=document.createElement("p");
-   p.textContent=item.name;
+      const img = document.createElement("img");
+      img.src = item.url;
+      img.alt = item.name;
+      img.loading = "lazy";
 
-   const img=document.createElement("img");
-   img.src=item.url;
-   img.alt=item.name;
-   img.loading="lazy";
+      const btn = document.createElement("button");
+      btn.textContent = "डाउनलोड (1 क्रेडिट)";
+      btn.addEventListener("click", () => {
+        downloadAsset(item.name, item.url);
+      });
 
-   const btn=document.createElement("button");
-   btn.textContent="डाउनलोड (1 क्रेडिट)";
-   btn.addEventListener("click",()=>{
-    downloadAsset(item.name,item.url);
-   });
+      box.append(p, img, btn);
+      grid.appendChild(box);
+    });
 
-   box.append(p,img,btn);
-   grid.appendChild(box);
+    section.appendChild(grid);
+    container.appendChild(section);
   });
-
-  section.appendChild(grid);
-  container.appendChild(section);
- });
 }
 
-function filterAssets(){
- renderCategories(document.getElementById("search-input").value||"");
+function filterAssets() {
+  renderCategories(document.getElementById("search-input").value || "");
 }
 
-/* नया डाउनलोड सिस्टम:
-   बटन क्लिक होते ही 1 क्रेडिट कटेगा।
-   नया टैब खुलने या न खुलने से क्रेडिट वापस नहीं जुड़ेगा।
-*/
-function downloadAsset(title,url){
+function downloadAsset(title, url) {
+  let credits = getCredits();
+  if (credits <= 0) {
+    alert("❌ आपके अकाउंट में क्रेडिट समाप्त हो चुके हैं। कृपया रिचार्ज करें।");
+    showDashboard(0);
+    return;
+  }
+  credits = credits - 1;
+  saveCredits(credits);
+  document.getElementById("credits-count").textContent = credits;
+  window.open(url, "_blank");
+  alert("✅ " + title + " के लिए 1 क्रेडिट काट लिया गया है। बचे हुए क्रेडिट: " + credits);
 
- let credits=getCredits();
-
- // क्रेडिट समाप्त होने पर डाउनलोड रोकें
- if(credits<=0){
-  alert("❌ आपके अकाउंट में क्रेडिट समाप्त हो चुके हैं। कृपया रिचार्ज करें।");
-  showDashboard(0);
-  speakMessage("आपके क्रेडिट समाप्त हो चुके हैं। कृपया रिचार्ज करें।");
-  return;
- }
-
- // क्लिक होते ही एक क्रेडिट काटें
- credits=credits-1;
-
- // नया बैलेंस अकाउंट में सेव करें
- saveCredits(credits);
-
- // स्क्रीन पर नया बैलेंस दिखाएँ
- document.getElementById("credits-count").textContent=credits;
-
- // डाउनलोड के लिए इमेज खोलने की कोशिश करें
- window.open(url,"_blank");
-
- // यूज़र को सूचना दें
- alert(
-  "✅ "+title+" के लिए 1 क्रेडिट काट लिया गया है।\n"+
-  "बचे हुए क्रेडिट: "+credits
- );
-
- // क्रेडिट खत्म होने पर लाइब्रेरी बंद करें
- if(credits<=0){
-  showDashboard(0);
- }
+  if (credits <= 0) {
+    showDashboard(0);
+  }
 }
 
-function buyPlan(name,credits,price){
- if(!activeMobile){
-  alert("पहले लॉगिन करें।");
-  return;
- }
-
- const phone="916366920472";
-
- const message=`नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: ${activeMobile} और Gmail: ${activeEmail}`;
-
- window.open(
-  "https://wa.me/"+phone+"?text="+encodeURIComponent(message),
-  "_blank",
-  "noopener"
- );
+function buyPlan(name, credits, price) {
+  if (!activeMobile) {
+    alert("पहले लॉगिन करें।");
+    return;
+  }
+  const phone = "916366920472";
+  const message = `नमस्ते, मैं 'Uday Prakash Platform' पर ${name} (₹${price} - ${credits} क्रेडिट्स) लेना चाहता हूँ। मेरा पंजीकृत मोबाइल नंबर है: ${activeMobile} और Gmail: ${activeEmail}`;
+  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(message), "_blank", "noopener");
 }
 </script>
 
