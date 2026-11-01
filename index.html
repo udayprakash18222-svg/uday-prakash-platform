@@ -255,7 +255,7 @@ button:hover{background:var(--primary-dark)}
     if (voicePlayed) return;
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
-      const text = "उदय प्रकाश देव साइड में आप सबका स्वागत है। कृपया अपना 10 अंकों का मोबाइल नंबर और जीमेल आईडी दर्ज करें और एक छह अंकों का पिन कोड बनाएं और वह पिन कोड किसी के साथ शेयर ना करें। धन्यवाद।";
+      const text = "उदय प्रकाश वेबसाइट में आप सबका स्वागत है। कृपया अपना 10 अंकों का मोबाइल नंबर और जीमेल आईडी दर्ज करें और एक छह अंकों का पिन कोड बनाएं और वह पिन कोड किसी के साथ शेयर ना करें। धन्यवाद।";
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "hi-IN";
       utterance.rate = 0.9;
